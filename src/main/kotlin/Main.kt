@@ -25,7 +25,7 @@ fun main() {
 
     val (dataFile, templateFile, outputFile, firstDayOfLastMonth) = createFileReferences(
         File("/Users/tine2k/Downloads"),
-        File("/Users/tine2k/Downloads/out")
+        File("/Users/tine2k/Mega/Wiener Wohnen/Zeiterfassung")
     )
 
     val groupedRecords = readRecords(dataFile)
