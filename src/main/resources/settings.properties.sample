@@ -1,0 +1,21 @@
+# location where the CSV data file of last month is
+# $start -> will be replaced with the start of last month (e.g. 2023-01-01)
+# $end -> will be replaced with the end of last month (e.g. 2023-01-31)
+dataFileLocation=/Users/myUser/Downloads/User_ Max-Mustermann_$start_$end.csv
+
+# XLSX template file (e.g. /tmp/template.xlsx)
+templateFileLocation=/Users/myUser/Timesheets/template.xlsx
+
+# directory to copy generated file to
+outputDir=/Users/myUser/Timesheets/
+
+# file name of generated file
+# $year -> will be replaced with the current year (e.g. 2023)
+# $month -> will be replaced with the current month (e.g. 02)
+outputFileName=Max_Mustermann_$month$year.xlsx
+
+# optional: open email client with predefined text
+# $year -> will be replaced with the current year (e.g. 2023)
+# $month -> will be replaced with name of the current month (e.g. Januar)
+mailURI=mailto:Invoicing@company.com?subject=Zeiterfassung%20$month%20$year&body=Liebes%20Invoicing-Team%2C%0D%0A%0D%0Aanbei%20die%20Rechnung%20f%C3%BCr%20den%20Zeitraum%20$month%20$year.%20Vielen%20Dank.%0D%0A%0D%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%0D%0AMax%20Mustermann
+

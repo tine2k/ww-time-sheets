@@ -1,3 +1,4 @@
 ww-time-sheets.iml
 target
 .idea
+src/main/resources/settings.properties
