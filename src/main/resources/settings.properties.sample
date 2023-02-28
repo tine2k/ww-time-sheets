@@ -1,3 +1,6 @@
+# Hours of the day when the work starts
+startHour=8
+
 # location where the CSV data file of last month is
 # $start -> will be replaced with the start of last month (e.g. 2023-01-01)
 # $end -> will be replaced with the end of last month (e.g. 2023-01-31)

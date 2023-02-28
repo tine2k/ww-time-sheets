@@ -1,5 +1,11 @@
 import org.apache.commons.lang3.time.DateFormatUtils
-import org.apache.poi.ss.usermodel.*
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.DateUtil
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.supercsv.cellprocessor.Optional
 import org.supercsv.cellprocessor.ParseDate
 import org.supercsv.cellprocessor.ParseDouble
@@ -29,6 +35,7 @@ fun main() {
     assert(file != null) { "settings.properties must exist on the class path!" }
     val properties = Properties()
     properties.load(file)
+    assert(properties.getProperty("startHour").toDoubleOrNull() != null) { "startHour must be numeric" }
 
     val (dataFile, templateFile, outputFile, firstDayOfLastMonth) = createFileReferences(
             properties.getProperty("dataFileLocation"),
@@ -37,7 +44,7 @@ fun main() {
             properties.getProperty("outputFileName"))
     val groupedRecords = readRecords(dataFile)
 
-    writeToXls(groupedRecords, templateFile, outputFile)
+    writeToXls(groupedRecords, templateFile, outputFile, properties.getProperty("startHour").toDouble())
 
     val desktop = Desktop.getDesktop()
     desktop.open(outputFile)
@@ -54,7 +61,7 @@ fun main() {
 
 private fun createFileReferences(dataFileName: String, templateFile: File, outputFolder: File, outputFileName: String): Config {
     val currentDate = LocalDate.now()
-    val firstDayOfLastMonth = currentDate.with(firstDayOfMonth()).minusMonths(1)
+    val firstDayOfLastMonth = currentDate.plusDays(2).with(firstDayOfMonth()).minusMonths(1)
     val lastDayOfLastMonth = firstDayOfLastMonth.with(lastDayOfMonth())
     val month = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("MM"))
     val year = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("yyyy"))
@@ -125,7 +132,7 @@ fun readRecords(dataFile: File): List<Record> {
             .reduce { _, accumulator, element -> accumulator + element }.values.sortedBy { it.date }
 }
 
-fun writeToXls(records: Collection<Record>, templateFile: File, outputFile: File) {
+fun writeToXls(records: Collection<Record>, templateFile: File, outputFile: File, hourStart: Double) {
     FileInputStream(templateFile).use { inp ->
         val wb: Workbook = WorkbookFactory.create(inp)
         val sheet: Sheet = wb.getSheetAt(0)
@@ -138,8 +145,8 @@ fun writeToXls(records: Collection<Record>, templateFile: File, outputFile: File
         records.forEachIndexed { index, record ->
             val row: Row = sheet.getRow(index + 7)
             fillCell(row, 1, record.date, dateCellStyle)
-            fillCell(row, 2, formatDate(hoursAsDate(8.0)), timeCellStyle)
-            fillCell(row, 3, formatDate(hoursAsDate(8.0 + record.hours)), timeCellStyle)
+            fillCell(row, 2, formatDate(hoursAsDate(hourStart - 1.0)), timeCellStyle)
+            fillCell(row, 3, formatDate(hoursAsDate(hourStart - 1.0 + record.hours)), timeCellStyle)
             fillCell(row, 4, null, timeCellStyle)
             fillCell(row, 7, 672002.0)
             fillCell(row, 9, record.description)
