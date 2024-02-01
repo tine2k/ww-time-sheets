@@ -61,7 +61,7 @@ fun main() {
 
 private fun createFileReferences(dataFileName: String, templateFile: File, outputFolder: File, outputFileName: String): Config {
     val currentDate = LocalDate.now()
-    val firstDayOfLastMonth = currentDate.plusDays(2).with(firstDayOfMonth()).minusMonths(1)
+    val firstDayOfLastMonth = currentDate.plusDays(12).with(firstDayOfMonth()).minusMonths(1)
     val lastDayOfLastMonth = firstDayOfLastMonth.with(lastDayOfMonth())
     val month = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("MM"))
     val year = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("yyyy"))
@@ -120,7 +120,7 @@ fun readRecords(dataFile: File): List<Record> {
             Optional(),
             Optional(),
             NotNull()
-                                           );
+                                           )
 
     val records = mutableListOf<Record>()
     while (true) {
