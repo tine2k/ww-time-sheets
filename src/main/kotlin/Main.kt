@@ -55,7 +55,9 @@ fun main() {
     if (mailUri != null) {
         val year = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("yyyy"))
         val month = firstDayOfLastMonth.format(DateTimeFormatter.ofPattern("MMMM"))
-        desktop.mail(URI.create(mailUri.replace("\$month", month).replace("\$year", year)))
+        val fullMailUri = URI.create(mailUri.replace("\$month", month).replace("\$year", year))
+        println("Running mail URL: $fullMailUri")
+        desktop.mail(fullMailUri)
     }
 }
 
